@@ -1,0 +1,6 @@
+mesa[viz]>=3.0
+solara
+matplotlib
+networkx
+streamlit
+plotly

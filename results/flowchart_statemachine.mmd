@@ -1,0 +1,52 @@
+flowchart TD
+    Start([Dev.step at tick t]) --> S{state?}
+
+    %% ---- idle ----
+    S -->|idle| I{backlog<br/>available?}
+    I -->|no| Wait1([wait this tick])
+    I -->|yes| Pull[pull task from backlog<br/>state = working]
+
+    %% ---- working ----
+    S -->|working| W[work_remaining -= 1]
+    W --> Done{task<br/>finished?}
+    Done -->|yes| Complete[task completed<br/>velocity += story points<br/>LEARN task-completion<br/>state = idle]
+    Done -->|no| Blk{hit a blocker?<br/>prob = block_prob}
+    Blk -->|no| Cont([keep working])
+    Blk -->|yes| SetBlk[state = blocked<br/>stage = solo]
+
+    %% ---- blocked: dispatch on stage ----
+    S -->|blocked| BS{blocker<br/>stage?}
+
+    BS -->|solo| Solo{resolve alone?<br/>prob = solo_skill}
+    Solo -->|yes| UnblkSolo[unblock<br/>LEARN solo]
+    Solo -->|no| Ask[stage = ask_next_tick]
+
+    BS -->|ask_next_tick| Find{helper free?<br/>working or idle}
+    Find -->|no| Wait2([wait, retry next tick])
+    Find -->|yes| Chan{requester AND<br/>helper in office?}
+    Chan -->|yes| Sync[SYNC session<br/>~1 tick]
+    Chan -->|no| Async[ASYNC session<br/>~5 ticks]
+    Sync --> Timer[helper locked<br/>stage = waiting_for_help]
+    Async --> Timer
+
+    BS -->|waiting_for_help| TickDown[help_timer -= 1]
+    TickDown --> Exp{timer<br/>expired?}
+    Exp -->|no| Wait3([keep waiting])
+    Exp -->|yes| UnblkHelp[release helper<br/>unblock<br/>LEARN sync or async]
+
+    %% ---- helping ----
+    S -->|helping| Lock([locked: no own work<br/>until session ends])
+
+    %% ---- resume ----
+    UnblkSolo --> Resume([state = working])
+    UnblkHelp --> Resume
+
+    %% ---- model context note ----
+    Note["model boundaries each tick:<br/>day -> re-roll office/home per dev (remote_share)<br/>sprint -> record velocity, top up backlog, run turnover"]
+
+    classDef learn fill:#ffe6b3,stroke:#cc8400,stroke-width:2px,color:#000;
+    classDef decision fill:#dbeafe,stroke:#2563eb,color:#000;
+    classDef note fill:#f3f4f6,stroke:#9ca3af,color:#374151,font-style:italic;
+    class Complete,UnblkSolo,UnblkHelp learn;
+    class S,I,Done,Blk,BS,Solo,Find,Chan,Exp decision;
+    class Note note;

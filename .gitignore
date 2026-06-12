@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environment
+venv/
+.venv/
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+
+# Code snapshots / archives
+*.zip
+
+# Local editor / assistant state
+.claude/
