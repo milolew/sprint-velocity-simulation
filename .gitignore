@@ -13,6 +13,9 @@ venv/
 *.log
 *.out
 *.toc
+*.nav
+*.snm
+*.vrb
 
 # Code snapshots / archives
 *.zip
