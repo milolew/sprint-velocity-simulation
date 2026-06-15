@@ -644,6 +644,9 @@ interactive front-end with Streamlit. The code separates the simulation itself f
 that drives or observes it (Table~\ref{tab:code}): one self-contained model module, a set of
 command-line experiment harnesses, analysis and plotting scripts, and a test suite. The whole
 model is about 560 lines; no run depends on any state outside its own \texttt{TeamModel} instance.
+The complete source code --- the model, the experiment harnesses, the analysis scripts, and the
+test suite --- is available in a public repository at
+\url{https://github.com/milolew/sprint-velocity-simulation}.
 
 \begin{table}[H]
 \centering
@@ -664,7 +667,7 @@ File & Role \\
 \texttt{calibrate\_learning.py} & Fits \texttt{learning\_rate} to the literature ramp-up curve. \\
 \texttt{plot\_*.py}, \texttt{analyze*.py} & Aggregation (means, CIs) and figure rendering. \\
 \texttt{app\_streamlit.py} & Interactive front-end over the same model. \\
-\texttt{tests/} & \texttt{pytest} suite (87 tests across 14 files). \\
+\texttt{tests/} & \texttt{pytest} suite (125 tests across 14 files). \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -699,7 +702,7 @@ distribution, not just its mean, survives for later analysis. Aggregation and fi
 in separate scripts, so the same CSVs can be re-analysed without re-running the model. The
 single-sprint and year-long sweeps run sequentially; the sensitivity study, far larger at roughly
 $3{,}000$ runs, is parallelised across worker processes with Python's \texttt{multiprocessing}, each
-worker executing one independent simulation. Correctness is guarded by a \texttt{pytest} suite of 87
+worker executing one independent simulation. Correctness is guarded by a \texttt{pytest} suite of 125
 tests across fourteen files, covering the state machine and blocker handling, the
 synchronous/asynchronous help channels, the learning and turnover mechanics, multi-sprint horizons,
 the two-phase activation, data collection, parameter validation, and edge cases, with a dedicated
