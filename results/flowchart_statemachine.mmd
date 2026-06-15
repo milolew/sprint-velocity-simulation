@@ -1,5 +1,6 @@
 flowchart TD
-    Start([Dev.step at tick t]) --> S{state?}
+    Begin([START]) --> Start([Dev.step at tick t])
+    Start --> S{state?}
 
     %% ---- idle ----
     S -->|idle| I{backlog<br/>available?}
