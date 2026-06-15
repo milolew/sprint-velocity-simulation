@@ -13,6 +13,7 @@
 \usepackage{caption}
 \usepackage[hidelinks]{hyperref}
 \usepackage[strings]{underscore}
+\usepackage{microtype} % tighter justification, fewer over/underfull boxes
 
 % Map font glyphs (incl. ff/fi/fl ligatures) to Unicode so extracted text is correct.
 \input{glyphtounicode}
@@ -28,6 +29,13 @@
 \setcounter{bottomnumber}{2}
 \setcounter{totalnumber}{4}
 
+% Discourage orphan/widow lines and page breaks just after a broken word,
+% so paragraphs don't strand a single line at the top/bottom of a page.
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=4000
+
 \title{Remote work, team velocity, and long-term capability\\
        \large An agent-based simulation of a software-development team}
 \author{Miłosz Lewandowski\\[4pt]
@@ -37,7 +45,8 @@
 
 \begin{document}
 \maketitle
-\vspace{-1.5em}
+% Tighten the gap below the title block without a brittle fixed negative skip.
+\vspace{-1.5em plus 0.3em minus 0.3em}
 
 \begin{abstract}
 \noindent
